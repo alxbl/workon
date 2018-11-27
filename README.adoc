@@ -1,0 +1,69 @@
+= Workon: Straight to the Point
+Alexandre Beaulieu <alex@segfault.me>
+v1.0 2018-11-27
+
+Workon is a small script and accompanying plugins to make context switching
+less painful. I wrote it becausw I was getting tired of always switching back
+and forth between multiple projects and having to manually set up my workspace
+every time.
+
+It has not been tested much beyond my personal setup.
+
+== Usage
+
+`workon` is exposed as a function and must be sourced from your `.zshrc` or
+`.bashrc` to work as intended.
+
+`workon` uses the concept or workspaces to determine where to look for
+projects. These workspaces are specified in a PATH-like syntax and can be
+provided before sourcing the function. If not provided, the default is
+`$HOME/Work`
+
+A simple configuration looks like this: All projects in `Work` and `Dev` will
+be considered by `workon`.
+
+.zshrc Simple Example
+----
+export WORKSPACES="$HOME/Work:$HOME/Dev"
+source /path/to/workon
+----
+
+You can then use it by typing `workon <project` on the command line.
+
+== How it Works
+
+WorkOn is very simple to use: `workon <something>`.
+
+The process behind it is a bit more complex however and is similar to PATH
+resolution.
+
+Each directory in `$WORKSPACES` is iterated and the following checks are
+performed. The context switching process ends on the first check that succeeds
+or if all checks fail, meaning that no project was found.
+
+. Does a subdirectory `$PROJ` exist in the workspace?
+.. Is tmuxinator on the `PATH` and does `$PROJ/.tmuxinator.yml` exist?
+... Run `tmuxinator $PROJ/.tmuxinator` and exit.
+.. Is a `Pipfile` present?
+... Run `pipenv $PROJ`
+. If tmuxinator is on the `PATH`, Does a `$PROJ.yml` exist?
+.. Run `tmuxinator $PROJ.yml`
+.. Context Switch Succesful
+
+== Currently Supported (ordered by priority)
+
+- `.tmuxinator.yml` in project directory
+- Pipfile with `pipenv shell`
+- tmuxinator `project.yml` in a workspace
+- Plain directory fallback (cd only)
+
+== Future Work
+
+The following is a list of things I would like to add at some point:
+
+- [ ] Completion files for ZSH
+- [ ] Additional Context Support (rvm, node, .env, ...)
+- [ ] Support project templates and creation
+- [ ] Pretty colors for output
+- [ ] Support for tmuxinator's `.config/tmuxinator/$proj.yml`
+
