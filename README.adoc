@@ -3,7 +3,7 @@ Alexandre Beaulieu <alex@segfault.me>
 v1.0 2018-11-27
 
 Workon is a small script and accompanying plugins to make context switching
-less painful. I wrote it becausw I was getting tired of always switching back
+less painful. I wrote it because I was getting tired of always switching back
 and forth between multiple projects and having to manually set up my workspace
 every time.
 
@@ -65,5 +65,4 @@ The following is a list of things I would like to add at some point:
 - [ ] Additional Context Support (rvm, node, .env, ...)
 - [ ] Support project templates and creation
 - [ ] Pretty colors for output
-- [ ] Support for tmuxinator's `.config/tmuxinator/$proj.yml`
 
