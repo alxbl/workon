@@ -2,29 +2,28 @@
 Alexandre Beaulieu <alex@segfault.me>
 v1.0 2018-11-27
 
-Workon is a small script and accompanying plugins to make context switching
-less painful. I wrote it because I was getting tired of always switching back
-and forth between multiple projects and having to manually set up my workspace
-every time.
+Workon is a small oh-my-zsh plugin to make context switching less painful. I
+wrote it because I was getting tired of always switching back and forth between
+multiple projects and having to manually set up my workspace every time.
 
-It has not been tested much beyond my personal setup.
+It has not been tested much beyond my personal setup, so your mileage may vary.
 
 == Usage
 
-`workon` is exposed as a function and must be sourced from your `.zshrc` or
-`.bashrc` to work as intended.
-
-`workon` uses the concept or workspaces to determine where to look for
+`workon` is exposed as a plugin and must added to your oh-my-zsh `plugins`
+array.  `workon` uses the concept or workspaces to determine where to look for
 projects. These workspaces are specified in a PATH-like syntax and can be
 provided before sourcing the function. If not provided, the default is
-`$HOME/Work`
+`$HOME/Work`.
+
+If you would rather not use oh-my-zsh, it should still be directly
+``source``-able.
 
 A simple configuration looks like this: All projects in `Work` and `Dev` will
 be considered by `workon`.
 
 ----
 export WORKSPACES="$HOME/Work:$HOME/Dev"
-source /path/to/workon
 ----
 
 You can then use it by typing `workon <project>` on the command line.
@@ -39,16 +38,16 @@ check passes, all subsequent workspaces and checks are ignored.
 == Currently Supported (ordered by priority)
 
 - `.tmuxinator.yml` in project directory
-- tmuxinator `project.yml` in a workspace
+- tmuxinator `project_name.yml` in a workspace
 - global tmuxinator project file in `~/.config/tmuxinator`
-- Pipfile with `pipenv shell`
+- Pipfile in the project directory (`pipenv shell`)
 - Plain directory fallback (cd only)
 
 == Future Work
 
 The following is a list of things I would like to add at some point:
 
-- Completion files for ZSH
+- Completion files for ZSH based on contents of workspace directories.
 - Additional Context Support (rvm, node, .env, ...)
 - Support project templates and creation
 

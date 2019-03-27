@@ -4,12 +4,6 @@
 # Author:      Alexandre "alxbl" Beaulieu <alex@segfault.me>
 ###
 
-function _get_path_bash {
-}
-
-function _get_path_zsh {
-}
-
 function _workon_switch_to {
     p=$1 # The project name
 
@@ -61,6 +55,24 @@ function workon {
     fi
     _workon_switch_to $1
 }
-# }}}
-# vim:syntax=zsh:fdm=marker:
 
+function transcript {
+   if [[ "$(ps -ocommand= -p $PPID | awk '{print $1}')" != "script" ]]; then
+       mkdir -p ./logs
+       n="./logs/$(date +"%d-%b-%y_%H-%M-%S")_pid$$"
+       script -a -q --timing="$n.t" "$n.log"
+       echo "[+] Transcript saved at '$n.log'"
+   fi
+}
+
+function _transcript_check {
+    if [ -f .script ]; then
+        echo "[+] Recording transcript..."
+        transcript
+    fi
+}
+
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _transcript_check
+
+# vim:syntax=zsh:fdm=marker:
