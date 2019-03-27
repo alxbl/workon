@@ -1,16 +1,20 @@
-#!/bin/bash
+#!/bin/env zsh
 # Script:      Workon
-# Description: A function to make context switching easier.
+# Description: A zsh plugin to make working with multiple projects easier.
 # Author:      Alexandre "alxbl" Beaulieu <alex@segfault.me>
 ###
+
+function _get_path_bash {
+}
+
+function _get_path_zsh {
+}
 
 function _workon_switch_to {
     p=$1 # The project name
 
-    OIFS=$IFS
-    IFS=':'
     # Context lookup
-    for d in $WORKSPACES; do
+    for d in ${=WORKSPACES//:/ }; do
         # Highest Priority: tmuxinator project definition overrides all.
         if command -v tmuxinator &>/dev/null ; then
             # Project directory
@@ -41,8 +45,6 @@ function _workon_switch_to {
             return 0
         fi
     done
-    IFS=$OIFS
-
     echo "[!] Project not found :("
     return 127
 }
@@ -60,5 +62,5 @@ function workon {
     _workon_switch_to $1
 }
 # }}}
-# vim:syntax=sh:fdm=marker:
+# vim:syntax=zsh:fdm=marker:
 
